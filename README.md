@@ -51,16 +51,12 @@ For Software:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
+[https://github.com/alvisey/isitbanana-/blob/main/03-47-05.mp4]
 *Explain what the video demonstrates*
 
-# Additional Demos
-[Add any extra demo materials/links]
-
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- [Alvis CR]: [coding]
+- [Aleena Seby]: [github]
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
