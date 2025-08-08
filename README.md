@@ -1,47 +1,45 @@
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7" />
 
 
-# [Project Name] 🎯
+# [isitbanana] 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: [uselessness]
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: [Alvis CR] - [Jyothi Engineering]
+- Member 2: [Aleena Seby] - [Jyothi Engineering]
 
 ### Project Description
-[2-3 lines about what your project does]
+[An advanced, state-of-the-art, AI-powered, deep-learning, neural-network-based, banana detection system.
+Upload any image, and our proprietary algorithm* will determine — with groundbreaking accuracy — whether it’s a banana.]
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+[In today’s rapidly advancing digital society, one question continues to plague humanity: “Is this a banana?”
+Misidentification of bananas has led to snack-time disappointment, smoothie disasters, and severe potassium mismanagement. No reliable, open-source, browser-based banana recognition tool currently exists.]
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+[We built IsItBanana — a privacy-first, lightning-fast, zero-dependency “AI” that uses extremely advanced random number generation to instantly tell users if an image is a banana.
+It’s accessible worldwide via the web, requires no installation, and provides confidence levels that make it look legit — even though it’s hilariously useless.]
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- [HTML5,CSS3,JavaScript (Vanilla)]
+- [Visual Studio Code]
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
-
-### Implementation
 For Software:
 # Installation
-[commands]
-
-# Run
-[commands]
+[git clone https://github.com/<alvisey>/isitbanana.git
+cd isitbanana
+Run
+Double-click index.html in your browser
+OR run locally using:
+python3 -m http.server
+then visit:
+http://localhost:8000]
 
 ### Project Documentation
 For Software:
