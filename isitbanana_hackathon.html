@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IsItBanana — Hackathon Edition</title>
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#ffd166;
+      --muted:#9aa4b2;
+      --glass: rgba(255,255,255,0.04);
+      --good:#76c893;
+      --bad:#ff6b6b;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(180deg, #071022 0%, #0f1724 100%);
+      color:#e6eef7;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:960px;
+      display:grid;
+      gap:20px;
+      grid-template-columns: 420px 1fr;
+      align-items:start;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      padding:22px;
+      border-radius:14px;
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+    }
+
+    .hero{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      text-align:center;
+    }
+    h1{margin:0; font-size:1.6rem; letter-spacing:0.2px}
+    p.lead{margin:0;color:var(--muted)}
+
+    /* Upload area */
+    .dropzone{
+      margin-top:12px;
+      width:100%;
+      height:260px;
+      border-radius:10px;
+      border:2px dashed rgba(255,255,255,0.04);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.008), rgba(255,255,255,0.004));
+      position:relative;
+      overflow:hidden;
+    }
+    .dropzone.dragover{ border-color: rgba(255,255,255,0.12); box-shadow:0 10px 30px rgba(13,18,36,0.6) inset; }
+    .dz-inner{ text-align:center; padding:18px; max-width:86%; color:var(--muted) }
+    .dz-inner img{ max-width:100%; max-height:220px; border-radius:8px; display:block; margin:0 auto; }
+
+    .controls{ display:flex; gap:10px; margin-top:12px; justify-content:center; flex-wrap:wrap;}
+    .btn{
+      background: linear-gradient(180deg,var(--accent), #ffb84d);
+      color:#081426;
+      padding:10px 14px;
+      border-radius:8px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 6px 20px rgba(255, 177, 60, 0.12);
+    }
+    .btn.ghost{
+      background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* Results area */
+    .meta { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:6px;}
+    .result {
+      margin-top:14px;
+      font-weight:700;
+      font-size:1.2rem;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .confidence {
+      font-size:0.95rem;
+      color:var(--muted);
+    }
+
+    .progress-wrap{ margin-top:12px; height:14px; background:var(--glass); border-radius:999px; overflow:hidden}
+    .progress-bar{ height:100%; width:0%; background:linear-gradient(90deg,var(--accent), #ffd8a6); transition: width 900ms cubic-bezier(.2,.8,.2,1); }
+
+    .explain{
+      margin-top:12px;
+      padding:12px;
+      border-radius:8px;
+      background: rgba(255,255,255,0.02);
+      color:var(--muted);
+      font-size:0.95rem;
+      line-height:1.4;
+    }
+
+    .side{
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .card.small{
+      padding:14px;
+      border-radius:12px;
+    }
+
+    .stats{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .stat{
+      background: rgba(255,255,255,0.02);
+      padding:10px;
+      border-radius:8px;
+      flex:1;
+      text-align:center;
+    }
+    .stat h3{ margin:0; font-size:1.05rem }
+    .stat p{ margin:6px 0 0; color:var(--muted); font-size:0.88rem }
+
+    footer{ color:var(--muted); font-size:0.88rem; margin-top:8px; text-align:center; }
+
+    /* small helpers */
+    .tag{ background:rgba(255,255,255,0.03); padding:6px 8px; border-radius:999px; font-size:0.82rem; color:var(--muted); }
+
+    /* responsive */
+    @media (max-width:880px){
+      .wrap{ grid-template-columns: 1fr; }
+      .dropzone{ height:220px; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- LEFT: Upload + interactions -->
+    <div class="card">
+      <div class="hero" role="region" aria-label="IsItBanana hero">
+        <h1>🍌 IsItBanana — Hackathon Edition</h1>
+        <p class="lead">Upload an image and our proprietary Neuro-BananaNet will give you a verdict with theatrical confidence.</p>
+
+        <div id="dropzone" class="dropzone" tabindex="0" aria-label="File drop zone">
+          <div class="dz-inner" id="dzInner">
+            <p><strong>Drag & drop</strong> an image here — or</p>
+            <p class="tag">PNG, JPG, GIF (anything that looks suspicious)</p>
+            <img id="preview" alt="" style="display:none" />
+            <input id="fileInput" type="file" accept="image/*" style="display:none" />
+          </div>
+        </div>
+
+        <div class="controls" role="group" aria-label="Actions">
+          <label for="fileInput" class="btn" role="button" tabindex="0">Choose Image</label>
+          <button id="analyzeBtn" class="btn ghost">Analyze</button>
+          <button id="copyBtn" class="btn ghost" style="display:none">Copy Result</button>
+        </div>
+
+        <div class="progress-wrap" aria-hidden="true">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <div id="resultArea" style="width:100%; display:none;">
+          <div class="meta">
+            <div class="result" id="verdictText">Waiting for image…</div>
+            <div class="confidence" id="confidenceText"></div>
+          </div>
+
+          <div class="explain" id="explainText" aria-live="polite"></div>
+        </div>
+
+        <footer>Built for fun • Not FDA approved • Totally convincing</footer>
+      </div>
+    </div>
+
+    <!-- RIGHT: Info + show-off -->
+    <div class="side">
+      <div class="card small">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <strong>Model</strong>
+            <div style="color:var(--muted);font-size:0.88rem">Neuro-BananaNet v3.14 (theatrical)</div>
+          </div>
+          <div class="tag">Latency: ~0.2s (fake)</div>
+        </div>
+
+        <div class="stats" style="margin-top:12px;">
+          <div class="stat">
+            <h3 id="demoCounts">0</h3>
+            <p>Images judged</p>
+          </div>
+          <div class="stat">
+            <h3 id="bananaWins">0</h3>
+            <p>Banana verdicts</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card small">
+        <strong>Why it looks legit</strong>
+        <p style="color:var(--muted);margin:8px 0 0;font-size:0.95rem">
+          The UX simulates real ML: deliberate load, confidence % animation, textual explanation, and a “model” name. Judges love that.
+        </p>
+      </div>
+
+      <div class="card small">
+        <strong>Demo script (30s)</strong>
+        <ol style="color:var(--muted);font-size:0.95rem">
+          <li>Drag an image (or choose one) — I'll use a cat photo for contrast.</li>
+          <li>Click <em>Analyze</em>. Watch the progress, confidence score, and explanation.</li>
+          <li>Reveal the verdict: our demo uses theatrical language like <em>“Banana-likelihood: 98.3%”</em>.</li>
+        </ol>
+      </div>
+
+      <div class="card small">
+        <strong>Presentation tips</strong>
+        <ul style="color:var(--muted);font-size:0.95rem;margin:8px 0 0;padding-left:18px">
+          <li>Call the model name — “Neuro-BananaNet” — judges smile at plausible nonsense.</li>
+          <li>Make confident claims (it’s a *useless* product; lean into the joke).</li>
+          <li>Show a few weird images (shoe, stapler, banana) — scores should feel convincing.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hackathon-ready fake AI logic
+    const fileInput = document.getElementById('fileInput');
+    const dropzone = document.getElementById('dropzone');
+    const preview = document.getElementById('preview');
+    const dzInner = document.getElementById('dzInner');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const progressBar = document.getElementById('progressBar');
+    const resultArea = document.getElementById('resultArea');
+    const verdictText = document.getElementById('verdictText');
+    const confidenceText = document.getElementById('confidenceText');
+    const explainText = document.getElementById('explainText');
+    const demoCounts = document.getElementById('demoCounts');
+    const bananaWins = document.getElementById('bananaWins');
+    const copyBtn = document.getElementById('copyBtn');
+
+    let currentFile = null;
+    let counts = 0, wins = 0;
+
+    // Helpers
+    function resetUI(){
+      progressBar.style.width = '0%';
+      resultArea.style.display = 'none';
+      copyBtn.style.display = 'none';
+      verdictText.textContent = 'Waiting for image…';
+      confidenceText.textContent = '';
+      explainText.textContent = '';
+    }
+
+    function showPreview(file){
+      const url = URL.createObjectURL(file);
+      preview.src = url;
+      preview.style.display = 'block';
+      dzInner.querySelector('p')?.remove?.(); // remove initial text if present
+    }
+
+    // Drag & drop
+    ['dragenter','dragover'].forEach(e=>{
+      dropzone.addEventListener(e, ev=>{
+        ev.preventDefault();
+        ev.stopPropagation();
+        dropzone.classList.add('dragover');
+      });
+    });
+    ['dragleave','drop'].forEach(e=>{
+      dropzone.addEventListener(e, ev=>{
+        ev.preventDefault();
+        ev.stopPropagation();
+        dropzone.classList.remove('dragover');
+      });
+    });
+    dropzone.addEventListener('drop', ev=>{
+      const f = ev.dataTransfer.files && ev.dataTransfer.files[0];
+      if(f) handleFile(f);
+    });
+
+    // File select
+    fileInput.addEventListener('change', ev=>{
+      const f = ev.target.files && ev.target.files[0];
+      if(f) handleFile(f);
+    });
+
+    // clicking label triggers input via for attribute; here we wire fallback
+    dropzone.addEventListener('click', ()=> fileInput.click());
+    dropzone.addEventListener('keydown', (e)=> { if(e.key === 'Enter') fileInput.click(); });
+
+    function handleFile(file){
+      if(!file.type.startsWith('image/')) {
+        alert('Please upload an image file.');
+        return;
+      }
+      currentFile = file;
+      showPreview(file);
+      resetUI();
+    }
+
+    // Theatrical analysis: staged loading -> animated percentage
+    analyzeBtn.addEventListener('click', async ()=>{
+      if(!currentFile){
+        verdictText.textContent = '📷 Please choose an image first.';
+        return;
+      }
+      // Simulate staged "AI" work
+      resultArea.style.display = 'block';
+      verdictText.textContent = '🔬 Analyzing with Neuro-BananaNet v3.14...';
+      explainText.textContent = 'Initializing tensor orchestation, warming banana filters...';
+      copyBtn.style.display = 'none';
+
+      // Stage 1: small fake computation
+      await fakeProgress(12, 600, 'Preprocessing image...');
+
+      // Stage 2: feature extraction
+      await fakeProgress(38, 900, 'Extracting curvature & yellowness features...');
+
+      // Stage 3: inference
+      await fakeProgress(78, 1200, 'Consulting banana heuristics...');
+
+      // Final random biased decision
+      const decision = fakeDecide(currentFile);
+      const confidence = decision.confidence; // 0-100
+      const isBanana = decision.isBanana;
+
+      // finalize progress
+      await fakeProgress(100, 700, 'Finalizing...');
+
+      // animate final bar to 100% and then present results
+      progressBar.style.width = '100%';
+
+      // animate numeric confidence
+      await animateConfidence(confidence);
+
+      // verdict text with microcopy
+      if(isBanana){
+        verdictText.innerHTML = '✅ <span style="color:var(--good)">Yes — banana detected</span>';
+        wins++;
+      } else {
+        verdictText.innerHTML = '❌ <span style="color:var(--bad)">Not a banana</span>';
+      }
+
+      counts++;
+      demoCounts.textContent = counts;
+      bananaWins.textContent = wins;
+      explainText.innerHTML = generateExplanation(decision);
+
+      copyBtn.style.display = 'inline-block';
+      copyBtn.onclick = ()=> {
+        const txt = `IsItBanana: ${isBanana ? 'BANANA' : 'NOT BANANA'} — ${confidence.toFixed(1)}% confidence.\nModel: Neuro-BananaNet v3.14`;
+        navigator.clipboard?.writeText(txt).then(()=> alert('Result copied to clipboard!'), ()=> alert('Copy failed'));
+      };
+    });
+
+    function fakeProgress(targetPercent, ms, message){
+      return new Promise(resolve=>{
+        const start = parseFloat(progressBar.style.width) || 0;
+        const now = start;
+        const stepCount = Math.max(10, Math.floor(ms/50));
+        let i=0;
+        explainText.textContent = message;
+        const interval = setInterval(()=>{
+          i++;
+          const next = now + (targetPercent - now) * (i/stepCount);
+          progressBar.style.width = Math.min(next, targetPercent) + '%';
+          if(i>=stepCount){
+            clearInterval(interval);
+            resolve();
+          }
+        }, ms/stepCount);
+      });
+    }
+
+    function fakeDecide(file){
+      // Base bias:
+      // - If filename contains 'banana' or 'banan' strongly bias to banana
+      // - Use simple heuristics on file size (not accurate, just theater)
+      const name = (file.name || '').toLowerCase();
+      const sizeKB = (file.size || 0) / 1024;
+
+      let base = Math.random() * 0.5 + 0.25; // between .25 and .75
+      if(name.includes('banana') || name.includes('banan')) base += 0.3;
+      if(name.includes('yellow')) base += 0.12;
+      if(sizeKB < 20) base -= 0.12; // tiny images less likely
+
+      // create confidence 60-99 depending on base
+      let confidence = 40 + base * 60 + Math.random() * 12; // 40..112 but we'll clamp
+      confidence = Math.max(4, Math.min(99.9, confidence));
+
+      // final boolean threshold with slight randomness
+      const isBanana = (confidence > 55) && (Math.random() < (base + 0.1));
+      return { isBanana, confidence, heuristic: { name, sizeKB: Math.round(sizeKB) } };
+    }
+
+    async function animateConfidence(target){
+      const node = confidenceText;
+      node.textContent = `Confidence: 0.0%`;
+      return new Promise(resolve=>{
+        let cur = 0;
+        const steps = 26;
+        const int = setInterval(()=>{
+          cur += (target - cur) / 6;
+          node.textContent = `Confidence: ${cur.toFixed(1)}%`;
+          if(Math.abs(cur - target) < 0.3){
+            node.textContent = `Confidence: ${target.toFixed(1)}%`;
+            clearInterval(int);
+            resolve();
+          }
+        }, 60);
+      });
+    }
+
+    function generateExplanation(dec){
+      // produce pseudo-technical explanation for theatrical effect
+      const fragmentsTrue = [
+        `High curvature correlation (bending index 0.92) matched canonical banana archetypes.`,
+        `Dominant spectrum indicates strong yellow-channel energy; banana-color vector matched at 98% similarity.`,
+        `Neural patch attention focused on peel-like texture regions with high probability mass.`,
+        `Post-processing heuristic "PeelSavant" confirmed morphology.`
+      ];
+      const fragmentsFalse = [
+        `No peel-like curvature detected; dominant edges correspond to generic object outlines.`,
+        `Color distribution is inconsistent with banana profile (dominant hue off by 42°).`,
+        `Model attention concentrated on label areas and background patterns; unlikely to be banana.`,
+        `Heuristics flagged unnatural rigidity—peels tend to curve.`
+      ];
+
+      const choices = dec.isBanana ? fragmentsTrue : fragmentsFalse;
+      // choose 2 lines
+      const line1 = choices[Math.floor(Math.random()*choices.length)];
+      const line2 = choices[Math.floor(Math.random()*choices.length)];
+      // confidence narrative
+      const narrative = dec.isBanana
+        ? `Neuro-BananaNet v3.14 reports a high banana-likelihood (${dec.confidence.toFixed(1)}%).`
+        : `Neuro-BananaNet v3.14 is unconvinced (${dec.confidence.toFixed(1)}%).`;
+
+      const heur = `Filename heuristic: "${dec.heuristic.name || 'unknown'}" • size ~${dec.heuristic.sizeKB}KB`;
+
+      return `${narrative}\n\n• ${line1}\n• ${line2}\n\n${heur}\n\nModel notes: "For research purposes only. Do not feed to actual monkeys."`;
+    }
+
+    // keyboard accessibility: Enter on analyze triggers click
+    analyzeBtn.addEventListener('keydown', e=> { if(e.key === 'Enter') analyzeBtn.click(); });
+
+    // Start with an example banana for convenience (comment out if you want empty)
+    (function seedExample(){
+      // create a small yellow rectangle if no file chosen — purely optional, we keep UI empty
+      resetUI();
+    })();
+
+    // Make sure result area hidden initially
+    resetUI();
+  </script>
+</body>
+</html>
