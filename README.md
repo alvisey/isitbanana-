@@ -27,19 +27,38 @@ It’s accessible worldwide via the web, requires no installation, and provides 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [HTML5,CSS3,JavaScript (Vanilla)]
-- [Visual Studio Code]
-
-For Software:
 # Installation
-[git clone https://github.com/<alvisey>/isitbanana.git
+For Software:
+Languages Used:
+*HTML5
+*CSS3
+*JavaScript (Vanilla)
+Frameworks Used:
+*None (fully built from scratch)
+Libraries Used:
+*None (optional: Google Fonts, Font Awesome, Animate.css for style)
+Tools Used:
+*Visual Studio Code
+*Google Chrome (Browser Testing)
+*Git
+*GitHub Pages (Hosting)
+*Canva / Figma (Optional UI/graphics design)
+
+Installation
+# Clone the repository
+git clone https://github.com/<your-username>/isitbanana.git
+
+# Go to the project folder
 cd isitbanana
+
 Run
 Double-click index.html in your browser
 OR run locally using:
 python3 -m http.server
-then visit:
-http://localhost:8000]
+Then visit:
+http://localhost:8000
+
+
 
 ### Project Documentation
 For Software:
