@@ -27,8 +27,6 @@ It’s accessible worldwide via the web, requires no installation, and provides 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-# Installation
-For Software:
 Languages Used:
 *HTML5
 *CSS3
