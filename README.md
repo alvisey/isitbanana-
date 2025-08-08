@@ -16,11 +16,11 @@
 [An advanced, state-of-the-art, AI-powered, deep-learning, neural-network-based, banana detection system.
 Upload any image, and our proprietary algorithm* will determine — with groundbreaking accuracy — whether it’s a banana.]
 
-### The Problem (that doesn't exist)
+### The Problem 
 [In today’s rapidly advancing digital society, one question continues to plague humanity: “Is this a banana?”
 Misidentification of bananas has led to snack-time disappointment, smoothie disasters, and severe potassium mismanagement. No reliable, open-source, browser-based banana recognition tool currently exists.]
 
-### The Solution (that nobody asked for)
+### The Solution
 [We built IsItBanana — a privacy-first, lightning-fast, zero-dependency “AI” that uses extremely advanced random number generation to instantly tell users if an image is a banana.
 It’s accessible worldwide via the web, requires no installation, and provides confidence levels that make it look legit — even though it’s hilariously useless.]
 
@@ -44,37 +44,10 @@ http://localhost:8000]
 ### Project Documentation
 For Software:
 
-# Screenshots (Add at least 3)
+# Screenshots
 ![Screenshot1](https://github.com/alvisey/isitbanana-/blob/main/Screenshot%202025-08-09%20032854.png)
-*Add caption explaining what this shows*
-
 ![Screenshot2](https://github.com/alvisey/isitbanana-/blob/main/Screenshot%202025-08-09%20032728.png)
-*Add caption explaining what this shows*
-
-
-
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
-
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
+![Screenshot2](https://github.com/alvisey/isitbanana-/blob/main/Screenshot%202025-08-09%20032728.png)
 
 ### Project Demo
 # Video
