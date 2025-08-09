@@ -68,7 +68,7 @@ For Software:
 
 ### Project Demo
 # Video
-[https://github.com/alvisey/isitbanana-/blob/main/03-47-05.mp4]
+[https://drive.google.com/file/d/1BRlaKATjEmpErQjjagl5S0BRrHQdetjh/view?usp=sharing]
 *Explain what the video demonstrates*
 
 ## Team Contributions
